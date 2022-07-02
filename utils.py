@@ -18,5 +18,7 @@ def search_for_posts(query):
     pass
 
 
-def get_post_by_pk(pk):
-    pass
+def get_post_by_pk(post_pk: int) -> dict:
+    for post in get_posts_all():
+        if post['pk'] == post_pk:
+            return post
