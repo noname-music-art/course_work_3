@@ -276,6 +276,26 @@ textarea {
 	vertical-align: middle
 }
 
+.header__search-btn {
+	position: absolute;
+	left: 0;
+	top: 34px;
+	text-decoration: none;
+	display: block
+}
+
+.header__search-icon {
+	display: inline-block;
+	vertical-align: middle
+}
+
+.header__search-counter {
+	font-size: 18px;
+	font-weight: bold;
+	color: #000;
+	vertical-align: middle
+}
+
 .item {
 	margin-bottom: 22px;
 	padding-bottom: 23px;

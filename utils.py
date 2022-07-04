@@ -19,8 +19,13 @@ def get_posts_by_user(user_name):
     pass
 
 
-def search_for_posts(query):
-    pass
+def search_for_posts(query: str) -> list[dict]:
+    """Search post by keyword"""
+    result = []
+    for post in load_posts_from_source():
+        if query.lower() in post['content'].lower():
+            result.append(post)
+    return result
 
 
 def get_post_by_pk(post_pk: int) -> dict:
