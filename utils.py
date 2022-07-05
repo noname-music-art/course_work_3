@@ -29,6 +29,8 @@ def search_for_posts(query: str) -> list[dict]:
     for post in load_posts_from_source():
         if query.lower() in post['content'].lower():
             result.append(post)
+            if len(result) >= 10:
+                result = result[:10]
     return result
 
 
