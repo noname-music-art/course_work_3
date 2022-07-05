@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+
+from api.views import api_blueprint
 from main.views import main_blueprint
 from post.views import post_blueprint
 from search.views import search_blueprint
@@ -11,6 +13,7 @@ app.register_blueprint(main_blueprint)
 app.register_blueprint(post_blueprint)
 app.register_blueprint(search_blueprint)
 app.register_blueprint(user_feed_blueprint)
+app.register_blueprint(api_blueprint)
 
 
 @app.errorhandler(404)
