@@ -15,8 +15,12 @@ def get_posts_all() -> list[dict]:
     return load_posts_from_source()
 
 
-def get_posts_by_user(user_name):
-    pass
+def get_posts_by_user(user_name: str) -> list[dict]:
+    result = []
+    for post in load_posts_from_source():
+        if user_name.lower() in post['poster_name'].lower():
+            result.append(post)
+    return result
 
 
 def search_for_posts(query: str) -> list[dict]:
@@ -29,7 +33,7 @@ def search_for_posts(query: str) -> list[dict]:
 
 
 def get_post_by_pk(post_pk: int) -> dict:
-    for post in get_posts_all():
+    for post in load_posts_from_source():
         if post['pk'] == post_pk:
             return post
 
