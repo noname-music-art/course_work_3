@@ -1,11 +1,11 @@
 import logging
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify
 from app.main.dao.posts_dao import PostsDAO
 
-api_blueprint = Blueprint("api_blueprint", __name__)                # Создаем экземпляр для блюпринта апи
+api_blueprint = Blueprint("api_blueprint", __name__)
 
-posts_dao = PostsDAO("data/posts.json")                             # берем посты из файла
+posts_dao = PostsDAO("data/posts.json")
 
 logger = logging.getLogger("basic")
 

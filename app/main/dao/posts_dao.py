@@ -15,14 +15,14 @@ class PostsDAO:
 
     def get_all(self):
         """ Возвращает список со всеми данными"""
-        candidates = self.load_data()
-        return candidates
+        posts = self.load_data()
+        return posts
 
     def get_by_pk(self, post_pk: int) -> dict:
         """ Возвращает один пост по его номеру"""
         posts = self.load_data()
         for post in posts:
-            if post["pk"] == post_pk:
+            if post['pk'] == post_pk:
                 return post
 
     def get_by_user(self, user_name):
