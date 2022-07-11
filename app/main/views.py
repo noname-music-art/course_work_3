@@ -30,14 +30,12 @@ def post_page(post_pk):
 @main_blueprint.route('/search/')
 def posts_search():
     query = request.args.get("s", "")
-
-    if query != "":
-        posts = posts_dao.search(query)
-        number_of_posts = len(posts)
-    else:
+    if query == "":
         posts = []
         number_of_posts = 0
-
+    else:
+        posts = posts_dao.search(query)
+        number_of_posts = len(posts)
     return render_template("search.html", query=query, posts=posts, number_of_posts=number_of_posts)
 
 

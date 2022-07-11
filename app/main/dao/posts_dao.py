@@ -24,6 +24,7 @@ class PostsDAO:
         for post in posts:
             if post['pk'] == post_pk:
                 return post
+        raise ValueError('Такого поста не существует')
 
     def get_by_user(self, user_name):
         """ Возвращает посты указанного пользователя"""
@@ -32,7 +33,10 @@ class PostsDAO:
         for post in posts:
             if post["poster_name"] == user_name:
                 posts_by_user.append(post)
-        return posts_by_user
+        if len(posts_by_user) > 0:
+            return posts_by_user
+        else:
+            raise ValueError('Такого юзера нет')
 
     def search(self, query: str) -> list[dict]:
         """ Возвращает список словарей по вхождению query"""
