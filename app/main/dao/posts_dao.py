@@ -1,50 +1,57 @@
 import json
+from json import JSONDecodeError
+from exceptions.data_exceptions import DataSourceError
+from post import Post
 
 
 class PostsDAO:
+    """"""
 
     def __init__(self, path):
-        """ При создании экземпляра DAO нужно указать путь к файлу с данными"""
         self.path = path
 
-    def load_data(self):
-        """ Загружает данные из файла и возвращает обычный list"""
-        with open(self.path, "r", encoding="utf-8") as file:
-            data = json.load(file)
+    def _load_data(self):
+        """"""
+        try:
+            with open(self.path, "r", encoding="utf-8") as file:
+                data = json.load(file)
+        except(FileNotFoundError, JSONDecodeError):
+            raise DataSourceError(f'Не удаётся получить данные {self.path}')
         return data
 
+    def _load_posts(self):
+        """"""
+        post_data = self._load_data()
+        list_of_posts = [Post(**post_data) for post_data in post_data]
+        return list_of_posts
+
     def get_all(self):
-        """ Возвращает список со всеми данными"""
-        posts = self.load_data()
+        """"""
+        posts = self._load_posts()
         return posts
 
-    def get_by_pk(self, post_pk: int) -> dict:
-        """ Возвращает один пост по его номеру"""
-        posts = self.load_data()
+    def get_by_pk(self, post_pk: int) -> Post:
+        """"""
+        posts = self._load_posts()
+
         for post in posts:
-            if post['pk'] == post_pk:
+            if post.pk == post_pk:
                 return post
         raise ValueError('Такого поста не существует')
 
-    def get_by_user(self, user_name):
-        """ Возвращает посты указанного пользователя"""
-        posts = self.get_all()
-        posts_by_user = []
-        for post in posts:
-            if post["poster_name"] == user_name:
-                posts_by_user.append(post)
+    def get_by_user(self, user_name: str) -> list[Post]:
+        """"""
+        posts = self._load_posts()
+        posts_by_user = [post for post in posts if post.poster_name.lower() == user_name.lower()]
         if len(posts_by_user) > 0:
             return posts_by_user
         else:
             raise ValueError('Такого юзера нет')
 
-    def search(self, query: str) -> list[dict]:
-        """ Возвращает список словарей по вхождению query"""
-        posts = self.get_all()
-        posts_by_query = []
-        for post in posts:
-            if query.lower() in post["content"].lower():
-                posts_by_query.append(post)
-                if len(posts_by_query) >= 10:
-                    posts_by_query = posts_by_query[:10]
+    def search(self, query: str) -> list[Post]:
+        """"""
+        posts = self._load_posts()
+        posts_by_query = [post for post in posts if query.lower() in post.content.lower()]
+        if len(posts_by_query) >= 10:
+            posts_by_query = posts_by_query[:10]
         return posts_by_query
