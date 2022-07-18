@@ -1,13 +1,15 @@
 import logging
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect
 from app.main.dao.posts_dao import PostsDAO
 from app.main.dao.comments_dao import CommentsDAO
+from app.main.dao.bookmarks_dao import BookmarksDAO
 
 
 main_blueprint = Blueprint("main_blueprint", __name__, template_folder="templates")
 posts_dao = PostsDAO("data/posts.json")
 comments_dao = CommentsDAO("data/comments.json")
+bookmarks_dao = BookmarksDAO("data/bookmarks.json")
 
 logger = logging.getLogger("basic")
 
@@ -15,15 +17,16 @@ logger = logging.getLogger("basic")
 @main_blueprint.route('/')
 def main():
     logger.debug("Были запрошены все посты")
-    posts: list[dict] = posts_dao.get_all()
-    return render_template("index.html", posts=posts)
+    posts = posts_dao.get_all()
+    bookmarks_count = len(bookmarks_dao.get_all_bookmarks())
+    return render_template("index.html", posts=posts, bookmarks_count=bookmarks_count)
 
 
 @main_blueprint.route('/posts/<int:post_pk>')
 def post_page(post_pk):
     logger.debug(f"Был запрошен пост: {post_pk}")
-    post: dict = posts_dao.get_by_pk(post_pk)
-    comments: list[dict] = comments_dao.get_by_post_pk(post_pk)
+    post = posts_dao.get_by_pk(post_pk)
+    comments = comments_dao.get_by_post_pk(post_pk)
     return render_template("post.html", post=post, comments=comments)
 
 
@@ -43,3 +46,21 @@ def posts_search():
 def posts_by_user(poster_name):
     posts = posts_dao.get_by_user(poster_name)
     return render_template("user_feed.html", posts=posts)
+
+
+@main_blueprint.route('/bookmarks/')
+def bookmarks_page():
+    posts = bookmarks_dao.get_all_bookmarks()
+    return render_template("bookmarks.html", posts=posts)
+
+
+@main_blueprint.route('/bookmarks/add/<int:post_id>', methods=['POST'])
+def add_bookmark(post_id: int):
+    bookmarks_dao.add_bookmark(post_id)
+    return redirect("/", code=302)
+
+
+@main_blueprint.route('/bookmarks/remove/<int:post_id>', methods=['DELETE'])
+def delete_bookmark(post_id: int):
+    bookmarks_dao.delete_bookmark(post_id)
+    return redirect("/", code=302)

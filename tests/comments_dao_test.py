@@ -1,23 +1,23 @@
 import pytest
 
-from app.main.dao.post import Post
-from app.main.dao.posts_dao import PostsDAO
+from app.main.dao.comment import Comment
+from app.main.dao.comments_dao import CommentsDAO
 
 
-def check_fields(post):
+def check_fields(comment):
 
-    fields = ["poster_name", "poster_avatar", "pic", "content", "views_count", "likes_count", "pk"]
+    fields = ["post_id", "commenter_name", "comment", "pk"]
 
     for field in fields:
-        assert hasattr(post, field), f"Нет поля {field}"
+        assert hasattr(comment, field), f"Нет поля {field}"
 
 
-class TestPostsDAO:
+class TestCommentsDAO:
 
     @pytest.fixture
     def post_dao(self):
-        post_dao_instance = PostsDAO("../tests/posts_mock.json")
-        return post_dao_instance
+        comment_dao_instance = CommentsDAO("../tests/comments_mock.json")
+        return comment_dao_instance
 
     def test_get_all_types(self, post_dao):
         posts = post_dao.get_all()

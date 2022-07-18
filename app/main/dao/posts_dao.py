@@ -16,7 +16,7 @@ class PostsDAO:
             with open(self.path, "r", encoding="utf-8") as file:
                 data = json.load(file)
         except(FileNotFoundError, JSONDecodeError):
-            raise DataSourceError(f'Не удаётся получить данные {self.path}')
+            raise DataSourceError(f'Не удаётся получить данные постов из {self.path}')
         return data
 
     def _load_posts(self):
