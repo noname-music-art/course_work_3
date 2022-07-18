@@ -1,7 +1,7 @@
 import json
 from json import JSONDecodeError
 from exceptions.data_exceptions import DataSourceError
-from post import Post
+from app.main.dao.post import Post
 
 
 class PostsDAO:
