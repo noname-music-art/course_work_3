@@ -16,11 +16,12 @@ logger = logging.getLogger("basic")
 def api_get_posts_all():
     logger.info('Get all posts by API')
     posts: list[Post] = posts_dao.get_all()
-    return jsonify(posts)
+    return jsonify([post.__dict__ for post in posts])
 
 
 @api_blueprint.route('/api/posts/<int:post_id>', methods=['GET'])
 def api_get_post_by_id(post_id: int):
     logger.info(f'post {post_id}')
     post: Post = posts_dao.get_by_pk(post_id)
-    return jsonify(post)
+    return jsonify(post.__dict__)
+

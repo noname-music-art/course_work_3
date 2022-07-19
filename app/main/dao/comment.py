@@ -12,7 +12,7 @@ class Comment:
         self.pk = pk
 
     def __repr__(self):
-        return f"Post(" \
+        return f"Comment(" \
                f"{self.post_id}, " \
                f"{self.commenter_name}, " \
                f"{self.comment}, " \
