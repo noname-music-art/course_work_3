@@ -28,7 +28,7 @@ class BookmarksDAO:
     def save_bookmark_to_json(self, bookmarks):
         """"""
         with open(self.path, "w", encoding="utf-8") as file:
-            json.dump(bookmarks, file, ensure_ascii=False)
+            json.dump(bookmarks, file, ensure_ascii=False, indent=4, sort_keys=True)
 
     def get_all_bookmarks(self):
         """"""
@@ -38,17 +38,18 @@ class BookmarksDAO:
     def add_bookmark(self, bookmark):
         """"""
         bookmarks = self.get_all_bookmarks()
-        if bookmark not in bookmarks:
+        # if bookmark not in bookmarks:
+        if all(bookmark.pk != mark.pk for mark in bookmarks):
             bookmarks.append(bookmark)
-            self.save_bookmark_to_json(bookmarks)
+            self.save_bookmark_to_json([bookmark.__dict__ for bookmark in bookmarks])
 
         return bookmarks
 
-    def delete_bookmark(self, post_id):
-        """"""
-        bookmarks = self.get_all_bookmarks()
-        for index, bookmark in enumerate(bookmarks):
-            if bookmark['pk'] == post_id:
-                del bookmarks[index]
-                break
-        self.save_bookmark_to_json(bookmarks)
+    # def delete_bookmark(self, post_id):
+    #     """"""
+    #     bookmarks = self.get_all_bookmarks()
+    #     for index, bookmark in enumerate(bookmarks):
+    #         if bookmark['pk'] == post_id:
+    #             del bookmarks[index]
+    #             break
+    #     self.save_bookmark_to_json(bookmarks)
