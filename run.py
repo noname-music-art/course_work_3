@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 from app.main.views import main_blueprint
 from app.api.views import api_blueprint
@@ -13,5 +13,18 @@ app.register_blueprint(main_blueprint)
 app.register_blueprint(api_blueprint)
 
 
+@app.errorhandler(404)
+def not_found_error(error):
+    # logger.error('Something went wrong with errcode 404')
+    return render_template('404.html'), 404
+
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    # logger.error('Something went wrong with errcode 500')
+    return render_template('500.html'), 500
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

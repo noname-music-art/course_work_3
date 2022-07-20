@@ -49,9 +49,11 @@
         </div>
         <div class="item__post-bottom">
           <a href="../posts/{{ post.pk }}" class="item__btn-more">Подробнее</a>
-          <button type="button" class="item__bookmark-btn">
-            <img src="/static/img/bookmark.png" alt="" class="item__bookmark-icon" width="24">
-          </button>
+          <form action="{{ url_for('main_blueprint.add_bookmark', post_id=post.pk) }}" id="book_add" method="post">
+            <button type="submit" class="item__bookmark-btn">
+              <img src="/static/img/bookmark.png" alt="" class="item__bookmark-icon" width="24">
+            </button>
+          </form>
         </div>
       </div>
 

@@ -38,7 +38,11 @@
             </div>
             <span class="item__username">{{ post.poster_name }}</span>
           </a>
-          <a href="#" class="item__delete">Удалить</a>
+
+          <form action="{{ url_for('main_blueprint.delete_bookmark', post_id=post.pk) }}" method="post">
+            <input type="submit" class="item__delete" value="Удалить">
+          </form>
+
         </div>
         <a href="../posts/{{ post.pk }}" class="item__post-link">
           <img src="{{ post.pic }}" alt="" width="348" class="item__post-img">

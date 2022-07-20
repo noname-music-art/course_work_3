@@ -59,9 +59,9 @@ def add_bookmark(post_id):
     post = posts_dao.get_by_pk(post_id)
     bookmarks_dao.add_bookmark(post)
     return redirect("/", code=302)
-#
-#
-# @main_blueprint.route('/bookmarks/remove/<int:post_id>', methods=['DELETE'])
-# def delete_bookmark(post_id):
-#     bookmarks_dao.delete_bookmark(post_id)
-#     return redirect("/", code=302)
+
+
+@main_blueprint.route('/bookmarks/remove/<int:post_id>', methods=['POST'])
+def delete_bookmark(post_id):
+    bookmarks_dao.delete_bookmark(post_id)
+    return redirect("/bookmarks/", code=302)
