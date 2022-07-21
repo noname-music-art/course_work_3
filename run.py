@@ -15,15 +15,17 @@ app.register_blueprint(api_blueprint)
 
 @app.errorhandler(404)
 def not_found_error(error):
-    # logger.error('Something went wrong with errcode 404')
     return render_template('404.html'), 404
-
 
 
 @app.errorhandler(500)
 def internal_server_error(error):
-    # logger.error('Something went wrong with errcode 500')
     return render_template('500.html'), 500
+
+
+@app.errorhandler(ValueError)
+def value_error(error):
+    return render_template('404.html'), 404
 
 
 if __name__ == "__main__":

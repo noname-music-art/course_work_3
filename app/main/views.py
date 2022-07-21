@@ -16,6 +16,7 @@ logger = logging.getLogger("basic")
 
 @main_blueprint.route('/')
 def main():
+    """Main page (all posts) view"""
     logger.debug("Были запрошены все посты")
     posts = posts_dao.get_all()
     bookmarks_count = len(bookmarks_dao.get_all_bookmarks())
@@ -24,6 +25,7 @@ def main():
 
 @main_blueprint.route('/posts/<int:post_pk>')
 def post_page(post_pk):
+    """One post view (get by pk)"""
     logger.debug(f"Был запрошен пост: {post_pk}")
     post = posts_dao.get_by_pk(post_pk)
     comments = comments_dao.get_by_post_pk(post_pk)
@@ -32,6 +34,7 @@ def post_page(post_pk):
 
 @main_blueprint.route('/search/')
 def posts_search():
+    """Search view"""
     query = request.args.get("s", "")
     if query == "":
         posts = []
@@ -44,18 +47,21 @@ def posts_search():
 
 @main_blueprint.route('/user_feed/<poster_name>')
 def posts_by_user(poster_name):
+    """User_feed view (by poster_name)"""
     posts = posts_dao.get_by_user(poster_name)
     return render_template("user_feed.html", posts=posts)
 
 
 @main_blueprint.route('/bookmarks/')
 def bookmarks_page():
+    """Bookmarks view"""
     posts = bookmarks_dao.get_all_bookmarks()
     return render_template("bookmarks.html", posts=posts)
 
 
 @main_blueprint.route('/bookmarks/add/<int:post_id>', methods=['POST'])
 def add_bookmark(post_id):
+    """Add bookmark"""
     post = posts_dao.get_by_pk(post_id)
     bookmarks_dao.add_bookmark(post)
     return redirect("/", code=302)
@@ -63,5 +69,6 @@ def add_bookmark(post_id):
 
 @main_blueprint.route('/bookmarks/remove/<int:post_id>', methods=['POST'])
 def delete_bookmark(post_id):
+    """Delete bookmark"""
     bookmarks_dao.delete_bookmark(post_id)
     return redirect("/bookmarks/", code=302)

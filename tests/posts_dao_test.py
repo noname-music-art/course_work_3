@@ -35,7 +35,7 @@ class TestPostsDAO:
         posts = post_dao.get_all()
         correct_pks = {1, 2, 3}
         pks = set([post.pk for post in posts])
-        assert pks == correct_pks, "Не совпадает id"
+        assert pks == correct_pks, "Post ID not correct"
 
     def test_get_by_pk_types(self, post_dao):
         post = post_dao.get_by_pk(1)
@@ -44,10 +44,6 @@ class TestPostsDAO:
     def test_get_by_pk_fields(self, post_dao):
         post = post_dao.get_by_pk(1)
         check_fields(post)
-
-    def test_get_by_pk_none(self, post_dao):
-        post = post_dao.get_by_pk(999)
-        assert post is None, "Should be None for none existent pk"
 
     @pytest.mark.parametrize("pk", [1, 2, 3])
     def test_get_by_pk_correct_ids(self, post_dao, pk):

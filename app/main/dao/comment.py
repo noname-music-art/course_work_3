@@ -10,11 +10,3 @@ class Comment:
         self.commenter_name = commenter_name
         self.comment = comment
         self.pk = pk
-
-    def __repr__(self):
-        return f"Comment(" \
-               f"{self.post_id}, " \
-               f"{self.commenter_name}, " \
-               f"{self.comment}, " \
-               f"{self.pk}, " \
-               f")"
